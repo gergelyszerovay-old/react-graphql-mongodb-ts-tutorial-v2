@@ -21,8 +21,8 @@ The project uses the following packages on server side:
 
 * [JWT based authentication](#jwt-based-authentication)
 * [It uses the same classes to represent the entities in MongoDB and GraphQL](#it-uses-the-same-classes-to-represent-the-entities-in-mongodb-and-graphQL)
-* [Same input validation code on the server and client side](#same-input-validation-code-on-the-server-and-client-side)
-* [We use Dataloader to optimize MongoDB queries](#we-use-dataloader-to-optimize-mongodb-queries)
+* [Same input validation code on the server and client side](#same-input-validation-code-on-the-server-and-on-the-client side)
+* It uses Dataloader to optimize MongoDB queries ([/server/src/resolvers/NoteResolver.ts](https://github.com/gergelyszerovay/react-graphql-mongodb-ts-tutorial-v2/blob/master/server/src/resolvers/NoteResolver.ts))
 
 # Available Scripts
 
