@@ -1,7 +1,6 @@
 import {Form} from 'antd';
 import React, {FC, useState} from 'react';
-import {useMutation, useQuery} from "react-apollo";
-import {gql} from "apollo-boost";
+import {gql, useMutation, useQuery} from "@apollo/client";
 import {ClientSideValidation, ServerSideValidation} from "./validation-tools"
 import {EditNoteInput} from "../generated-inputs/EditNoteInput";
 import {RouteComponentProps} from 'react-router-dom';
@@ -52,7 +51,7 @@ const EditNote: FC<RouteComponentProps<MatchParams>> = ({match}: RouteComponentP
             _id: match.params.id
         },
         onCompleted: data => {
-            const note = Object.assign(data.SingleNote, {tagIds: data.SingleNote.tags.map((tag: any) => tag._id)});
+            const note = Object.assign({}, data.SingleNote, {tagIds: data.SingleNote.tags.map((tag: any) => tag._id)});
             form.setFieldsValue(note);
         }
         // fetchPolicy: 'no-cache'

@@ -1,8 +1,7 @@
 import {Button, Col, Form, Input, Layout, message, Row} from 'antd';
 import React from "react";
 import {SignUpInput} from "../generated-inputs/SignUpInput"
-import {useMutation} from "react-apollo";
-import {gql} from "apollo-boost";
+import {gql, useMutation} from "@apollo/client";
 import {LockOutlined, UserOutlined} from '@ant-design/icons';
 import {ClientSideValidation, ServerSideValidation} from "./validation-tools"
 import {withRouter} from "react-router-dom";

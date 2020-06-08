@@ -1,7 +1,6 @@
 import {Button, Divider, Layout} from 'antd';
 import React, {FC, ReactElement} from 'react';
-import {useLazyQuery, useMutation} from "react-apollo";
-import {ApolloError, gql} from "apollo-boost";
+import {ApolloError, gql, useLazyQuery, useMutation} from "@apollo/client";
 import {TopMenu} from "./TopMenu";
 import {TopMenuSign} from "./TopMenuSign";
 

@@ -1,6 +1,5 @@
 import React, {FC} from "react";
-import {ApolloProvider} from "react-apollo";
-import ApolloClient from "apollo-boost";
+import {ApolloClient, ApolloProvider} from "@apollo/client";
 
 import {BrowserRouter as Router, Route,} from "react-router-dom";
 

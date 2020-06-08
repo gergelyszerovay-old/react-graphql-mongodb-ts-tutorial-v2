@@ -1,7 +1,6 @@
 import {Form} from 'antd';
 import React, {FC, useState} from 'react';
-import {useMutation, useQuery} from "react-apollo";
-import {gql} from "apollo-boost";
+import {gql, useMutation, useQuery} from "@apollo/client";
 import {ClientSideValidation, ServerSideValidation} from "./validation-tools"
 import {NewNoteInput} from "../generated-inputs/NewNoteInput";
 import NoteModificationScreen from "./NoteModificationScreen";

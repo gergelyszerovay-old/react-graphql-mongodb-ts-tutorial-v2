@@ -1,7 +1,7 @@
 import {validate} from "class-validator";
 import {FieldData} from "rc-field-form/es/interface";
 import {FormInstance} from "antd/lib/form";
-import {ApolloError} from "apollo-boost";
+import {ApolloError} from "@apollo/client";
 import {message} from "antd";
 
 const convertValidationErrorsToAntFieldData = (values: any, validationErrors: any): FieldData[] => {

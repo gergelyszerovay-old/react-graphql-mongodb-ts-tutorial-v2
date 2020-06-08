@@ -2,8 +2,7 @@ import {Card, Dropdown, Layout, Menu, message, Modal, Tag} from 'antd';
 import {DownOutlined, ExclamationCircleOutlined} from '@ant-design/icons';
 
 import React from 'react';
-import {useMutation, useQuery} from "react-apollo";
-import {gql} from "apollo-boost";
+import {gql, useMutation, useQuery} from "@apollo/client";
 import {withRouter} from "react-router-dom";
 import {TopMenu} from './TopMenu';
 
