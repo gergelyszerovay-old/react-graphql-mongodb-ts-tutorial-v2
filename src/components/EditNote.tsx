@@ -5,6 +5,7 @@ import {ClientSideValidation, ServerSideValidation} from "./validation-tools"
 import {EditNoteInput} from "../generated-inputs/EditNoteInput";
 import {RouteComponentProps} from 'react-router-dom';
 import NoteModificationScreen from "./NoteModificationScreen";
+import {QUERY_NOTE_LIST, QUERY_TAGS} from "./gql";
 
 interface MatchParams {
     id: string;
@@ -14,16 +15,6 @@ const EditNote: FC<RouteComponentProps<MatchParams>> = ({match}: RouteComponentP
     const [form] = Form.useForm();
 
     const [isSubmitDisabled, SetIsSubmitDisabled] = useState<boolean>(false);
-
-    const QUERY_TAGS = gql`  
-    query Tags($userId: String!) {
-      Tags(userId: $userId) {
-        _id
-        name
-        userId
-      }
-    }
-    `
 
     const {loading: getTags_loading, data: getTags_data, error: getTags_error} = useQuery(QUERY_TAGS, {
         variables: {
@@ -75,6 +66,11 @@ const EditNote: FC<RouteComponentProps<MatchParams>> = ({match}: RouteComponentP
         {
             refetchQueries: [{
                 query: QUERY_TAGS,
+                variables: {
+                    userId: JSON.parse(localStorage.getItem('user') || '{}')?._id
+                },
+            }, {
+                query: QUERY_NOTE_LIST,
                 variables: {
                     userId: JSON.parse(localStorage.getItem('user') || '{}')?._id
                 },

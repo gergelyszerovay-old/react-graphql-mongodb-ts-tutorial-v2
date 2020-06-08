@@ -5,24 +5,13 @@ import React from 'react';
 import {gql, useMutation, useQuery} from "@apollo/client";
 import {withRouter} from "react-router-dom";
 import {TopMenu} from './TopMenu';
+import {QUERY_NOTE_LIST} from "./gql";
 
 const {Content} = Layout;
 
 const NoteList = withRouter(({history}) => {
-    const QUERY_LIST = gql`  
-    query Notes($userId: String!) {
-      Notes(userId: $userId) {
-        _id
-        title
-        text
-        tags {
-          _id
-          name
-        }
-      }
-    }
-    `;
-    const {loading: getNotes_loading, data: getNotes_data, error: getNotes_error} = useQuery(QUERY_LIST, {
+
+    const {loading: getNotes_loading, data: getNotes_data, error: getNotes_error} = useQuery(QUERY_NOTE_LIST, {
         variables: {
             userId: JSON.parse(localStorage.getItem('user') || '{}')?._id
         }
@@ -36,7 +25,7 @@ const NoteList = withRouter(({history}) => {
     `,
         {
             refetchQueries: [{
-                query: QUERY_LIST,
+                query: QUERY_NOTE_LIST,
                 variables: {
                     userId: JSON.parse(localStorage.getItem('user') || '{}')?._id
                 },

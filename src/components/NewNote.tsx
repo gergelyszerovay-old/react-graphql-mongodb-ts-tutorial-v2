@@ -4,21 +4,12 @@ import {gql, useMutation, useQuery} from "@apollo/client";
 import {ClientSideValidation, ServerSideValidation} from "./validation-tools"
 import {NewNoteInput} from "../generated-inputs/NewNoteInput";
 import NoteModificationScreen from "./NoteModificationScreen";
+import {QUERY_NOTE_LIST, QUERY_TAGS} from "./gql";
 
 const NewNote: FC = () => {
     const [form] = Form.useForm();
 
     const [isSubmitDisabled, SetIsSubmitDisabled] = useState<boolean>(false);
-
-    const QUERY_TAGS = gql`  
-    query Tags($userId: String!) {
-      Tags(userId: $userId) {
-        _id
-        name
-        userId
-      }
-    }
-    `
 
     const {loading: getTags_loading, data: getTags_data, error: getTags_error} = useQuery(QUERY_TAGS, {
         variables: {
@@ -44,6 +35,11 @@ const NewNote: FC = () => {
         {
             refetchQueries: [{
                 query: QUERY_TAGS,
+                variables: {
+                    userId: JSON.parse(localStorage.getItem('user') || '{}')?._id
+                },
+            }, {
+                query: QUERY_NOTE_LIST,
                 variables: {
                     userId: JSON.parse(localStorage.getItem('user') || '{}')?._id
                 },
@@ -93,45 +89,6 @@ const NewNote: FC = () => {
     return <NoteModificationScreen form={form} tagsData={getTags_data} onFinish={onFinish}
                                    isSubmitDisabled={isSubmitDisabled} selectedMenuItem="newnote"/>
 
-    // const options = (!getTags_data?.Tags) ? '' : getTags_data?.Tags.map((tag: any) => {
-    //     return <Option key={tag._id} value={tag._id}>{tag.name}</Option>
-    // })
-    //
-    // return (
-    //     <Layout className="app-layout">
-    //         <TopMenu selected="newnote"/>
-    //         <Content className="app-content">
-    //             <Row>
-    //                 <Col xs={{span: 22, offset: 1}} md={{span: 12, offset: 6}}>
-    //                     <Form
-    //                         form={form}
-    //                         name="NewNoteForm"
-    //                         initialValues={{remember: false}}
-    //                         onFinish={onFinish}
-    //                         layout="vertical"
-    //                     >
-    //                         <Form.Item name="title" label="Title">
-    //                             <Input/>
-    //                         </Form.Item>
-    //                         <Form.Item name="text" label="Text">
-    //                             <TextArea rows={4}/>
-    //                         </Form.Item>
-    //                         <Form.Item name="tagIds" label="Tags">
-    //                             <Select mode="tags" style={{width: '100%'}} placeholder="Tags">
-    //                                 {options}
-    //                             </Select>
-    //                         </Form.Item>
-    //                         <Form.Item>
-    //                             <Button type="primary" htmlType="submit" style={{width: "100%"}} disabled={isSubmitDisabled}>New
-    //                                 note</Button>
-    //                         </Form.Item>
-    //                     </Form>
-    //                 </Col>
-    //             </Row>
-    //         </Content>
-    //     </Layout>
-    //
-    // )
 }
 
 export default NewNote;
