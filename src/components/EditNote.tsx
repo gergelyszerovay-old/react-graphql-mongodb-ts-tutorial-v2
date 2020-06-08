@@ -5,7 +5,7 @@ import {ClientSideValidation, ServerSideValidation} from "./validation-tools"
 import {EditNoteInput} from "../generated-inputs/EditNoteInput";
 import {RouteComponentProps} from 'react-router-dom';
 import NoteModificationScreen from "./NoteModificationScreen";
-import {QUERY_NOTE_LIST, QUERY_TAGS} from "./gql";
+import {QUERY_TAGS} from "./gql";
 
 interface MatchParams {
     id: string;
@@ -66,11 +66,6 @@ const EditNote: FC<RouteComponentProps<MatchParams>> = ({match}: RouteComponentP
         {
             refetchQueries: [{
                 query: QUERY_TAGS,
-                variables: {
-                    userId: JSON.parse(localStorage.getItem('user') || '{}')?._id
-                },
-            }, {
-                query: QUERY_NOTE_LIST,
                 variables: {
                     userId: JSON.parse(localStorage.getItem('user') || '{}')?._id
                 },
