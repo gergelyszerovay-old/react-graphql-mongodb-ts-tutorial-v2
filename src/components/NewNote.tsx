@@ -1,19 +1,22 @@
 import {Form} from 'antd';
-import React, {FC, useState} from 'react';
+import React, {FC, useContext, useState} from 'react';
 import {gql, useMutation, useQuery} from "@apollo/client";
-import {ClientSideValidation, ServerSideValidation} from "./validation-tools"
+import {ClientSideValidation, ServerSideValidation} from "../utils/validation-tools"
 import {NewNoteInput} from "../generated-inputs/NewNoteInput";
 import NoteModificationScreen from "./NoteModificationScreen";
-import {QUERY_NOTE_LIST, QUERY_TAGS} from "./gql";
+import {QUERY_NOTE_LIST, QUERY_TAGS} from "../utils/gql";
+import {AppContext} from "../utils/AppContext";
 
 const NewNote: FC = () => {
+    const {user} = useContext(AppContext);
+
     const [form] = Form.useForm();
 
     const [isSubmitDisabled, SetIsSubmitDisabled] = useState<boolean>(false);
 
     const {loading: getTags_loading, data: getTags_data, error: getTags_error} = useQuery(QUERY_TAGS, {
         variables: {
-            userId: JSON.parse(localStorage.getItem('user') || '{}')?._id
+            userId: user?._id
         }
         // fetchPolicy: 'no-cache'
     });
@@ -36,12 +39,12 @@ const NewNote: FC = () => {
             refetchQueries: [{
                 query: QUERY_TAGS,
                 variables: {
-                    userId: JSON.parse(localStorage.getItem('user') || '{}')?._id
+                    userId: user?._id
                 },
             }, {
                 query: QUERY_NOTE_LIST,
                 variables: {
-                    userId: JSON.parse(localStorage.getItem('user') || '{}')?._id
+                    userId: user?._id
                 },
             }],
             awaitRefetchQueries: true,
@@ -55,20 +58,17 @@ const NewNote: FC = () => {
             }
         });
 
-    const onFinish = (values0: any) => {
-        console.log('onFinish:', values0);
+    const onFinish = (values: any) => {
+        console.log('onFinish:', values);
 
         // 'title', 'text', 'tagIds': if undefined, set to empty string or []
-        const values0Update = Object.fromEntries(['title', 'text', 'tagIds'].map((k: string) => {
-            if (values0[k]) return [k, values0[k]];
+        const valuesUpdate = Object.fromEntries(['title', 'text', 'tagIds'].map((k: string) => {
+            if (values[k]) return [k, values[k]];
             if (k === 'tagIds') return [k, []];
             return [k, ''];
         }));
 
-        // update values, set _id
-        const values = Object.assign(values0, values0Update);
-
-        const input = Object.assign(new NewNoteInput(), values);
+        const input = Object.assign(new NewNoteInput(), values, valuesUpdate);
         console.log(input)
 
         ClientSideValidation(form, input, () => {
@@ -80,7 +80,7 @@ const NewNote: FC = () => {
                 // server side validation error
                 SetIsSubmitDisabled(false)
                 ServerSideValidation(form, input, e, () => {
-                    // after server side validation errors displayed
+                    // after server side validation errors were displayed
                 });
             });
         });

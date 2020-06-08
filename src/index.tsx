@@ -9,6 +9,7 @@ import {setContext} from '@apollo/link-context';
 import {onError} from "@apollo/link-error";
 
 import * as serviceWorker from './serviceWorker';
+import {AppProvider} from "./utils/AppContext";
 
 async function bootstrap() {
     const httpLink = createHttpLink({
@@ -48,7 +49,9 @@ async function bootstrap() {
 
     ReactDOM.render(
         <React.StrictMode>
-            <App client={client}/>
+            <AppProvider>
+                <App client={client}/>
+            </AppProvider>
         </React.StrictMode>,
         document.getElementById('root')
     );

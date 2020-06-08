@@ -11,7 +11,6 @@ type TopMenuSignProps = {
 export const TopMenuSign: FC<TopMenuSignProps> = ({selected}: TopMenuSignProps) => {
     return (
         <Header>
-            <div className="logo"/>
             <Menu theme="dark" mode="horizontal" defaultSelectedKeys={[selected]}>
                 <Menu.Item key="signin">Sign In<Link to="/"/></Menu.Item>
                 <Menu.Item key="signup">Sign Up<Link to="/signup"/></Menu.Item>

@@ -1,11 +1,12 @@
 import {Form} from 'antd';
-import React, {FC, useState} from 'react';
+import React, {FC, useContext, useState} from 'react';
 import {gql, useMutation, useQuery} from "@apollo/client";
-import {ClientSideValidation, ServerSideValidation} from "./validation-tools"
+import {ClientSideValidation, ServerSideValidation} from "../utils/validation-tools"
 import {EditNoteInput} from "../generated-inputs/EditNoteInput";
 import {RouteComponentProps} from 'react-router-dom';
 import NoteModificationScreen from "./NoteModificationScreen";
-import {QUERY_TAGS} from "./gql";
+import {QUERY_TAGS} from "../utils/gql";
+import {AppContext} from "../utils/AppContext";
 
 interface MatchParams {
     id: string;
@@ -14,11 +15,13 @@ interface MatchParams {
 const EditNote: FC<RouteComponentProps<MatchParams>> = ({match}: RouteComponentProps<MatchParams>) => {
     const [form] = Form.useForm();
 
+    const {user} = useContext(AppContext);
+
     const [isSubmitDisabled, SetIsSubmitDisabled] = useState<boolean>(false);
 
     const {loading: getTags_loading, data: getTags_data, error: getTags_error} = useQuery(QUERY_TAGS, {
         variables: {
-            userId: JSON.parse(localStorage.getItem('user') || '{}')?._id
+            userId: user._id
         }
         // fetchPolicy: 'no-cache'
     });
@@ -67,7 +70,7 @@ const EditNote: FC<RouteComponentProps<MatchParams>> = ({match}: RouteComponentP
             refetchQueries: [{
                 query: QUERY_TAGS,
                 variables: {
-                    userId: JSON.parse(localStorage.getItem('user') || '{}')?._id
+                    userId: user?._id
                 },
             }],
             awaitRefetchQueries: true,
@@ -81,20 +84,18 @@ const EditNote: FC<RouteComponentProps<MatchParams>> = ({match}: RouteComponentP
             }
         });
 
-    const onFinish = (values0: any): void => {
-        console.log('onFinish:', values0);
+    const onFinish = (values: any): void => {
+        console.log('onFinish:', values);
 
         // 'title', 'text', 'tagIds': if undefined, set to empty string or []
-        const values0Update = Object.fromEntries(['title', 'text', 'tagIds'].map((k: string) => {
-            if (values0[k]) return [k, values0[k]];
+        const valuesUpdate = Object.fromEntries(['title', 'text', 'tagIds'].map((k: string) => {
+            if (values[k]) return [k, values[k]];
             if (k === 'tagIds') return [k, []];
             return [k, ''];
         }));
 
-        // update values, set _id
-        const values = Object.assign(values0, values0Update, {_id: (getNote_data as any).SingleNote._id});
-
-        const input = Object.assign(new EditNoteInput(), values);
+        // + set _id
+        const input = Object.assign(new EditNoteInput(), values, valuesUpdate, {_id: (getNote_data as any).SingleNote._id});
         console.log(input)
 
         ClientSideValidation(form, input, () => {
@@ -106,14 +107,15 @@ const EditNote: FC<RouteComponentProps<MatchParams>> = ({match}: RouteComponentP
                 // server side validation error
                 SetIsSubmitDisabled(false)
                 ServerSideValidation(form, input, e, () => {
-                    // after server side validation errors displayed
+                    // after server side validation errors were displayed
                 });
             });
         });
     };
 
     return <NoteModificationScreen form={form} tagsData={getTags_data} onFinish={onFinish}
-                                   isSubmitDisabled={isSubmitDisabled} selectedMenuItem="notes"/>
+                                   isSubmitDisabled={isSubmitDisabled} selectedMenuItem="notes"
+                                   isLoading={getNote_data === undefined}/>
 }
 
 export default EditNote;

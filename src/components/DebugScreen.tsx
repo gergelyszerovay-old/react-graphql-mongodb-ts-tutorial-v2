@@ -1,10 +1,6 @@
-import {Button, Divider, Layout} from 'antd';
+import {Button, Divider, message} from 'antd';
 import React, {FC, ReactElement} from 'react';
 import {ApolloError, gql, useLazyQuery, useMutation} from "@apollo/client";
-import {TopMenu} from "./TopMenu";
-import {TopMenuSign} from "./TopMenuSign";
-
-const {Content} = Layout;
 
 const renderMe = (loading2: boolean, data2: any, error2?: ApolloError): ReactElement => {
     if (error2) {
@@ -49,23 +45,19 @@ const DebugScreen: FC = () => {
 
     const onLoadDemoData = async () => {
         await LoadDemoData();
+        message.success('Demo data were loaded.', 5)
     }
 
-    const menu = localStorage.getItem('user') ? <TopMenu selected="debug"/> : <TopMenuSign selected="debug"/>;
-
-    return <Layout className="app-layout">
-        {menu}
-        <Content className="app-content">
-            <Button onClick={() => onLoadDemoData()} htmlType="button">
-                Load demo data
-            </Button>
-            <Divider/>
-            <Button onClick={() => getMe()} htmlType="button">
-                Get me!
-            </Button>
-            {me}
-        </Content>
-    </Layout>
+    return <div>
+        <Button onClick={() => onLoadDemoData()} htmlType="button">
+            Load demo data
+        </Button>
+        <Divider/>
+        <Button onClick={() => getMe()} htmlType="button">
+            Get me!
+        </Button>
+        {me}
+    </div>
 }
 
 export default DebugScreen;

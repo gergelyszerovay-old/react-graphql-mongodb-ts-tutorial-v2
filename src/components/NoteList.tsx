@@ -1,19 +1,18 @@
-import {Card, Dropdown, Layout, Menu, message, Modal, Tag} from 'antd';
+import {Card, Dropdown, Menu, message, Modal, Tag} from 'antd';
 import {DownOutlined, ExclamationCircleOutlined} from '@ant-design/icons';
 
-import React from 'react';
+import React, {Fragment, useContext} from 'react';
 import {gql, useMutation, useQuery} from "@apollo/client";
 import {withRouter} from "react-router-dom";
-import {TopMenu} from './TopMenu';
-import {QUERY_NOTE_LIST} from "./gql";
-
-const {Content} = Layout;
+import {QUERY_NOTE_LIST} from "../utils/gql";
+import {AppContext} from "../utils/AppContext";
 
 const NoteList = withRouter(({history}) => {
+    const {user} = useContext(AppContext);
 
     const {loading: getNotes_loading, data: getNotes_data, error: getNotes_error} = useQuery(QUERY_NOTE_LIST, {
         variables: {
-            userId: JSON.parse(localStorage.getItem('user') || '{}')?._id
+            userId: user?._id
         }
         // fetchPolicy: 'no-cache'
     });
@@ -27,7 +26,7 @@ const NoteList = withRouter(({history}) => {
             refetchQueries: [{
                 query: QUERY_NOTE_LIST,
                 variables: {
-                    userId: JSON.parse(localStorage.getItem('user') || '{}')?._id
+                    userId: user?._id
                 },
             }]
         });
@@ -62,21 +61,22 @@ const NoteList = withRouter(({history}) => {
     }
 
     if (getNotes_data?.Notes) {
-        const cards = (getNotes_data?.Notes.length === 0) ?
+        if (getNotes_data?.Notes.length === 0) {
             // no notes
-            (<p>No notes yet.</p>)
-            :
-            getNotes_data.Notes.map((note: any) => {
-                const menu = (
-                    <Menu>
-                        <Menu.Item onClick={e => {
-                            onCardActionClick('edit', note._id);
-                        }}>
-                            Modify
-                        </Menu.Item>
-                        <Menu.Item danger onClick={e => {
-                            confirm(note._id)
-                        }}>
+            return <p>No notes yet.</p>
+        }
+
+        const cards = getNotes_data.Notes.map((note: any) => {
+            const menu = (
+                <Menu>
+                    <Menu.Item onClick={e => {
+                        onCardActionClick('edit', note._id);
+                    }}>
+                        Modify
+                    </Menu.Item>
+                    <Menu.Item danger onClick={e => {
+                        confirm(note._id)
+                    }}>
                             Delete
                         </Menu.Item>
                     </Menu>
@@ -102,13 +102,7 @@ const NoteList = withRouter(({history}) => {
                     </Card.Grid>
                 </Card>
             })
-
-        return <Layout className="app-layout">
-            <TopMenu selected="notes"/>
-            <Content className="app-content">
-                {cards}
-            </Content>
-        </Layout>
+        return <Fragment>{cards}</Fragment>
     } // if data.Notes
 
     // error
