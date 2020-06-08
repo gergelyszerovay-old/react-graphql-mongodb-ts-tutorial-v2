@@ -20,9 +20,9 @@ The project uses the following packages on server side:
 # Project Highlights
 
 * [JWT based authentication](#jwt-based-authentication)
-* [It uses the same classes to represent the entities in MongoDB and GraphQL](#we-use-the-same-classes-to-represent-the-entities-in-mongodb-and-graphQL)
-* [Same input validation code on the server and client side](same-input-validation-code-on-the-server-and-client-side)
-* [We use Dataloader to optimize MongoDB queries](we-use-dataloader-to-optimize-mongodb-queries)
+* [It uses the same classes to represent the entities in MongoDB and GraphQL](#it-uses-the-same-classes-to-represent-the-entities-in-mongodb-and-graphQL)
+* [Same input validation code on the server and client side](#same-input-validation-code-on-the-server-and-client-side)
+* [We use Dataloader to optimize MongoDB queries](#we-use-dataloader-to-optimize-mongodb-queries)
 
 # Available Scripts
 
@@ -30,7 +30,7 @@ We bootstrapped the client part of this project with [Create React App](https://
 
 In the project directory, you can run:
 
-###`npm start-server`
+### `npm start-server`
 
 Runs the server part of the app. Open [http://localhost:4001/graphql](http://localhost:4001/graphql) to view GraphiQL and the schema in your browser.
 
@@ -160,6 +160,8 @@ We store the information about the authenticated user in the localStorage, we se
 
 For example, the `User` entity has the following fields in MongoDB: _id, email, hashedPassword
 It has only the _id and email fields in GraphQL queries and mutations, we never send the users’ password through the network:
+
+(/server/src/entities/User.ts)[https://github.com/gergelyszerovay/react-graphql-mongodb-ts-tutorial-v2/blob/master/server/src/entities/User.ts]
 
 ```
 import {BaseEntity, Column, Entity, ObjectIdColumn} from "typeorm";
