@@ -7,9 +7,6 @@ export const CustomAuthChecker: AuthChecker<Context> = (
     {context},
     roles, // root, args, info
 ) => {
-    // here we can read the user from context
-    // and check his permission in the db against the `roles` argument
-    // that comes from the `@Authorized` decorator, eg. ["ADMIN", "MODERATOR"]
 
     if (!context.jwt) {
         console.log('No context.jwt');

@@ -5,7 +5,6 @@ import {buildSchema} from "type-graphql";
 
 import {ApolloServer} from "apollo-server-express";
 import * as express from "express";
-// import * as jwt from "express-jwt";
 import {Context} from "./apollo-context.interface";
 
 import {GenerateClientSideInputs} from './utils/GenerateClientSideInputs'
@@ -21,9 +20,9 @@ import {NoteResolver} from "./resolvers/NoteResolver"
 import {TagResolver} from "./resolvers/TagResolver"
 import {DebugResolver} from "./resolvers/DebugResolver"
 
-import {User} from "./models/User";
-import {Tag} from "./models/Tag";
-import {Note} from "./models/Note";
+import {User} from "./entities/User";
+import {Tag} from "./entities/Tag";
+import {Note} from "./entities/Note";
 
 import {CustomAuthChecker} from "./utils/CustomAuthChecker";
 
@@ -37,16 +36,14 @@ const startServer = async () => {
         emitSchemaFile: {
             path: __dirname + '/../../generated-schemas/schema.gql',
             commentDescriptions: true,
-            sortedSchema: false, // by default the printed schema is sorted alphabetically
+            sortedSchema: false
         },
     })
 
     GenerateClientSideInputs(__dirname + '/inputs', __dirname + '/../../src/generated-inputs');
 
     const server = new ApolloServer({
-        // These will be defined for both new or existing servers
         schema,
-        // context: ({ req, res }: any) => ({ req, res }),
         context: ({req, res}): Context => {
             return {
                 jwt: (req as any).jwt,

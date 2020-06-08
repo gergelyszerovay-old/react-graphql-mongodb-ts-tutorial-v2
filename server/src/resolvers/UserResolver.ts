@@ -1,6 +1,6 @@
 import {Arg, ArgumentValidationError, Authorized, Ctx, Mutation, Query, Resolver} from "type-graphql";
 
-import {User} from "../models/User";
+import {User} from "../entities/User";
 
 import {SignUpInput} from "../inputs/SignUpInput"
 import {SignInInput} from "../inputs/SignInInput"

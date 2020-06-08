@@ -1,5 +1,5 @@
 import {Field, ObjectType} from "type-graphql"; // @SERVER
-import {User} from '../models/User'
+import {User} from '../entities/User'
 
 @ObjectType() // @SERVER
 export class SignInOutput {

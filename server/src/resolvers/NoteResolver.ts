@@ -1,8 +1,8 @@
 import {Arg, Authorized, Ctx, Mutation, Query, Resolver} from "type-graphql";
 import {Context} from "../apollo-context.interface";
 import {getMongoRepository} from "typeorm";
-import {Note} from "../models/Note";
-import {Tag} from "../models/Tag";
+import {Note} from "../entities/Note";
+import {Tag} from "../entities/Tag";
 
 import {ObjectID} from 'mongodb';
 

@@ -1,8 +1,8 @@
 import {getMongoRepository} from "typeorm";
 
-import {User} from "../models/User";
-import {Tag} from "../models/Tag";
-import {Note} from "../models/Note";
+import {User} from "../entities/User";
+import {Tag} from "../entities/Tag";
+import {Note} from "../entities/Note";
 
 import {ObjectID} from "mongodb";
 import {Mutation, Resolver} from "type-graphql";
