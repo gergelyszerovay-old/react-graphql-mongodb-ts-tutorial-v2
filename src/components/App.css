@@ -1,0 +1,16 @@
+.ant-select-multiple .ant-select-selector,
+.ant-select-multiple .ant-select-selection-item {
+    transition: none;
+}
+
+.ant-card {
+    margin: 25px 50px;
+}
+
+body {
+    background-color: #f0f2f5;
+}
+
+.app-content {
+    padding: 25px;
+}
