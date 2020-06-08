@@ -54,7 +54,7 @@ const App: FC<{ client: ApolloClient<any> }> = ({client}) => {
             path: '/note/:id',
             menu: () => <TopMenu selected="notes"/>,
             content: ({match, history, location}: any) => (user?._id ?
-                <EditNote match={match} history={history} location={location}/> : <Redirect to="/"/>)
+                <EditNote/> : <Redirect to="/"/>)
         },
         {
             path: '/debug',

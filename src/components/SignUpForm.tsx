@@ -1,14 +1,15 @@
 import {Button, Col, Form, Input, Layout, message, Row} from 'antd';
-import React from "react";
+import React, {FC} from "react";
 import {SignUpInput} from "../generated-inputs/SignUpInput"
 import {gql, useMutation} from "@apollo/client";
 import {LockOutlined, UserOutlined} from '@ant-design/icons';
 import {ClientSideValidation, ServerSideValidation} from "../utils/validation-tools"
-import {withRouter} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 
 const {Content} = Layout;
 
-const SignUpForm = withRouter(({history}) => {
+const SignUpForm: FC = () => {
+    let history = useHistory();
     const [form] = Form.useForm();
 
     const [SignUp, {data}] = useMutation<() => void>(gql`
@@ -83,7 +84,7 @@ const SignUpForm = withRouter(({history}) => {
             </Col>
         </Row>
     );
-});
+};
 
 export default SignUpForm;
 

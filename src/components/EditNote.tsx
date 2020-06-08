@@ -3,7 +3,7 @@ import React, {FC, useContext, useState} from 'react';
 import {gql, useMutation, useQuery} from "@apollo/client";
 import {ClientSideValidation, ServerSideValidation} from "../utils/validation-tools"
 import {EditNoteInput} from "../generated-inputs/EditNoteInput";
-import {RouteComponentProps} from 'react-router-dom';
+import {useRouteMatch} from 'react-router-dom';
 import NoteModificationScreen from "./NoteModificationScreen";
 import {QUERY_TAGS} from "../utils/gql";
 import {AppContext} from "../utils/AppContext";
@@ -12,7 +12,9 @@ interface MatchParams {
     id: string;
 }
 
-const EditNote: FC<RouteComponentProps<MatchParams>> = ({match}: RouteComponentProps<MatchParams>) => {
+const EditNote: FC = () => {
+    let match = useRouteMatch<MatchParams>("/note/:id");
+
     const [form] = Form.useForm();
 
     const {user} = useContext(AppContext);
@@ -42,7 +44,7 @@ const EditNote: FC<RouteComponentProps<MatchParams>> = ({match}: RouteComponentP
     }
     `, {
         variables: {
-            _id: match.params.id
+            _id: match?.params.id
         },
         onCompleted: data => {
             const note = Object.assign({}, data.SingleNote, {tagIds: data.SingleNote.tags.map((tag: any) => tag._id)});

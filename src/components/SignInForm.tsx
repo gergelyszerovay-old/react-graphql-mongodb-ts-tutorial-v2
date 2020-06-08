@@ -1,15 +1,17 @@
 import {Button, Col, Form, Input, Layout, Row} from 'antd';
-import React, {useContext, useState} from 'react';
+import React, {FC, useContext, useState} from 'react';
 import {gql, useApolloClient, useMutation} from "@apollo/client";
 import {ClientSideValidation, ServerSideValidation} from "../utils/validation-tools"
 import {SignInInput} from "../generated-inputs/SignInInput";
-import {Link, withRouter} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import {LockOutlined, UserOutlined} from '@ant-design/icons';
 import {AppContext} from "../utils/AppContext";
 
 const {Content} = Layout;
 
-const SignInForm = withRouter(({history}) => {
+const SignInForm: FC = () => {
+    let history = useHistory();
+
     const {user, setUser} = useContext(AppContext);
 
     const [isSubmitDisabled, SetIsSubmitDisabled] = useState<boolean>(false);
@@ -103,7 +105,7 @@ const SignInForm = withRouter(({history}) => {
             </Col>
         </Row>
     );
-});
+};
 
 export default SignInForm;
 

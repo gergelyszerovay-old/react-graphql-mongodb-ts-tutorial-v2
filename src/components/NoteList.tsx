@@ -1,13 +1,14 @@
 import {Card, Dropdown, Menu, message, Modal, Tag} from 'antd';
 import {DownOutlined, ExclamationCircleOutlined} from '@ant-design/icons';
 
-import React, {Fragment, useContext} from 'react';
+import React, {FC, Fragment, useContext} from 'react';
 import {gql, useMutation, useQuery} from "@apollo/client";
-import {withRouter} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import {QUERY_NOTE_LIST} from "../utils/gql";
 import {AppContext} from "../utils/AppContext";
 
-const NoteList = withRouter(({history}) => {
+const NoteList: FC = () => {
+    let history = useHistory();
     const {user} = useContext(AppContext);
 
     const {loading: getNotes_loading, data: getNotes_data, error: getNotes_error} = useQuery(QUERY_NOTE_LIST, {
@@ -101,12 +102,12 @@ const NoteList = withRouter(({history}) => {
                         {tags}
                     </Card.Grid>
                 </Card>
-            })
+        })
         return <Fragment>{cards}</Fragment>
     } // if data.Notes
 
     // error
     return <p/>
-});
+};
 
 export default NoteList;
