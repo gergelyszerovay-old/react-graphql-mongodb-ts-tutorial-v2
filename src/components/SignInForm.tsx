@@ -45,8 +45,8 @@ const SignInForm: FC = () => {
         const input = Object.assign(new SignInInput(), values, valuesUpdate);
         console.log(input)
 
-        SetIsSubmitDisabled(true);
         ClientSideValidation(form, input, () => {
+            SetIsSubmitDisabled(true);
             SignIn({variables: input}).then((data) => {
                 setUser((data?.data as any).SignIn?.user);
 

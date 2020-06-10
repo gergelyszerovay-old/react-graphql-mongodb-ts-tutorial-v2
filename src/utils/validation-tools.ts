@@ -18,7 +18,7 @@ const convertValidationErrorsToAntFieldData = (values: any, validationErrors: an
     )
 };
 
-export const ServerSideValidation = (form: FormInstance, input: any, apolloErrors: ApolloError, cb: () => void) => {
+export const ServerSideValidation = (form: FormInstance, input: any, apolloErrors: ApolloError, cbOnError: () => void) => {
     // const apolloErrors = e as ApolloError;
     if (apolloErrors) {
         apolloErrors.graphQLErrors.forEach(apolloError => {
@@ -42,11 +42,11 @@ export const ServerSideValidation = (form: FormInstance, input: any, apolloError
         })
 
     } else {
-        cb();
+        cbOnError();
     }
 };
 
-export const ClientSideValidation = (form: FormInstance, input: any, cb: () => void) => {
+export const ClientSideValidation = (form: FormInstance, input: any, cbOnNoError: () => void) => {
     validate(input).then(errors => {
         // console.log("errors: ", JSON.stringify(errors, null, 2));
 
@@ -56,7 +56,7 @@ export const ClientSideValidation = (form: FormInstance, input: any, cb: () => v
         form.setFields(formErrors);
 
         if (errors.length === 0) {
-            cb();
+            cbOnNoError();
         }
     });
 

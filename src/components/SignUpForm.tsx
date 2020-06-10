@@ -1,5 +1,5 @@
 import {Button, Col, Form, Input, Layout, message, Row} from 'antd';
-import React, {FC} from "react";
+import React, {FC, useState} from "react";
 import {SignUpInput} from "../generated-inputs/SignUpInput"
 import {gql, useMutation} from "@apollo/client";
 import {LockOutlined, UserOutlined} from '@ant-design/icons';
@@ -11,6 +11,8 @@ const {Content} = Layout;
 const SignUpForm: FC = () => {
     let history = useHistory();
     const [form] = Form.useForm();
+
+    const [isSubmitDisabled, SetIsSubmitDisabled] = useState<boolean>(false);
 
     const [SignUp, {data}] = useMutation<() => void>(gql`
     mutation SignUp($email: String!, $password: String!, $password2: String!) {
@@ -34,13 +36,15 @@ const SignUpForm: FC = () => {
         console.log(input)
 
         ClientSideValidation(form, input, () => {
+            SetIsSubmitDisabled(true);
             SignUp({variables: input}).then(() => {
-                // no error, both server and client side validations were passed
-                history.push("/");
+                    // no error, both server and client side validations were passed
+                    history.push("/");
                     message.info('Succesful registration, please sign in', 5)
                 }
             ).catch(e => {
                 // server side validation error
+                SetIsSubmitDisabled(false);
                 ServerSideValidation(form, input, e, () => {
                     // after server side validation errors were displayed
                 });
@@ -78,7 +82,8 @@ const SignUpForm: FC = () => {
                     </Form.Item>
 
                     <Form.Item>
-                        <Button type="primary" htmlType="submit" style={{width: "100%"}}>Sign Up</Button>
+                        <Button type="primary" htmlType="submit" style={{width: "100%"}} disabled={isSubmitDisabled}>Sign
+                            Up</Button>
                     </Form.Item>
                 </Form>
             </Col>
