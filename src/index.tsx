@@ -10,6 +10,7 @@ import {onError} from "@apollo/link-error";
 
 import * as serviceWorker from './serviceWorker';
 import {AppProvider} from "./utils/AppContext";
+import {MUTATION_LOAD_DEMO_DATA} from './utils/gql';
 
 async function bootstrap() {
     const httpLink = createHttpLink({
@@ -46,6 +47,16 @@ async function bootstrap() {
         cache: new InMemoryCache(),
         link
     });
+
+    (window as any).appTest = (action: string, params?: any) => {
+        if (action === 'load_demo_data') {
+            (async () => {
+                await client.mutate({
+                    mutation: MUTATION_LOAD_DEMO_DATA
+                })
+            })();
+        }
+    };
 
     ReactDOM.render(
         <React.StrictMode>

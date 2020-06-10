@@ -22,4 +22,10 @@ export const QUERY_TAGS = gql`
         userId
       }
     }
-    `
+    `;
+
+export const MUTATION_LOAD_DEMO_DATA = gql`
+    mutation {
+      LoadDemoData
+    }  
+    `;

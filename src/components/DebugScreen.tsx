@@ -1,6 +1,6 @@
 import {Button, Divider, message} from 'antd';
 import React, {FC, ReactElement} from 'react';
-import {ApolloError, gql, useLazyQuery, useMutation} from "@apollo/client";
+import {ApolloError, gql, useLazyQuery} from "@apollo/client";
 
 const renderMe = (loading2: boolean, data2: any, error2?: ApolloError): ReactElement => {
     if (error2) {
@@ -37,14 +37,8 @@ const DebugScreen: FC = () => {
 
     const me = renderMe(loading2, data2, error2);
 
-    const [LoadDemoData, {data: LoadDemoData_data}] = useMutation<() => void>(gql`
-    mutation {
-      LoadDemoData
-    }  
-    `);
-
     const onLoadDemoData = async () => {
-        await LoadDemoData();
+        (window as any).appTest('load_demo_data');
         message.success('Demo data were loaded.', 5)
     }
 
