@@ -47,7 +47,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "start-server": "cd server && npx ts-node-dev --respawn src/server.ts",
-    "e2e-test": "jest --verbose test-e2e/SignInForm.test.js "
+    "test-e2e": "jest --verbose test-e2e/SignInForm.test.js "
   },
   "eslintConfig": {
     "extends": "react-app"

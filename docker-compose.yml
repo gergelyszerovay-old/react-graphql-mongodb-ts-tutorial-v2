@@ -85,7 +85,7 @@ services:
     working_dir: /opt/app
     environment:
       SELENIUM_HUB_URL: http://selenium-hub:4444/wd/hub
-      APP_BASE_URL: http://nuxt:3000/
+      APP_BASE_URL: http://front-end:3000/
     depends_on:
       - chrome
   selenium-hub:

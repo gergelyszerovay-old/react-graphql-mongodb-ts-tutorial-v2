@@ -1,14 +1,29 @@
-const {Builder} = require('selenium-webdriver')
-require('selenium-webdriver/chrome')
+const WebDriver = require('selenium-webdriver')
 require('selenium-webdriver/firefox')
-require('chromedriver')
-require('geckodriver')
-const {xClass, getElementCSS, getElementId, getElementXPath, antGetFormItemExplain} = require('./helpers')
+if (process.env.SELENIUM_HUB_URL === 'local') {
+    require('geckodriver')
+}
 const {defineFeature, loadFeature} = require('jest-cucumber')
+const {antGetFormItemExplain, xClass, getElementCSS, getElementId, getElementXPath} = require('./helpers')
 
-const rootURL = 'http://localhost:3000/'
+const capabilities = {
+    build: 'Jest',
+    browserName: 'chrome',
+    video: true,
+    network: true,
+    console: true,
+    visual: true
+}
 
-const feature = loadFeature(__dirname + '/features/SignInForm.feature');
+let rootURL
+
+if (process.env.SELENIUM_HUB_URL === 'local') {
+    rootURL = 'http://localhost:3000/'
+} else {
+    rootURL = process.env.APP_BASE_URL
+}
+
+const feature = loadFeature(__dirname + '/features/SignInForm.feature')
 
 const givenVisitUrlAndLoadDemoData = (ctx, given, url) => {
     given('I visit /', async () => {
@@ -32,7 +47,18 @@ defineFeature(feature, test => {
     let ctx = {};
 
     beforeAll(async () => {
-        ctx.driver = await new Builder().forBrowser('firefox').build()
+        if (process.env.SELENIUM_HUB_URL === 'local') {
+            ctx.driver = await new WebDriver.Builder().forBrowser('firefox').build()
+        } else {
+            ctx.driver = await new WebDriver.Builder()
+                .usingServer(process.env.SELENIUM_HUB_URL)
+                .withCapabilities(capabilities)
+                .build()
+        }
+    }, 10000)
+
+    afterAll(async () => {
+        await ctx.driver.quit()
     }, 10000)
 
     // afterAll(async () => driver.quit(), 10000);
