@@ -15,7 +15,9 @@ You can use *npm* or *docker-compose*.
 If you use npm, set the **MONGODB_CONNECTION_STRING**, **HOST** and **BACKEND_HOST** environment variables, eg.: 
 
 MONGODB_CONNECTION_STRING=mongodb://localhost:27017/admin
+
 HOST=127.0.0.1
+
 BACKEND_HOST=127.0.0.1
 
 ### Run the app
