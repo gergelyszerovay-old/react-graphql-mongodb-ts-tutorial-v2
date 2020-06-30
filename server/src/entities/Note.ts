@@ -35,7 +35,7 @@ export class Note extends BaseEntity {
     tagIds: ObjectID[];
 
     // graphql only
-    @Field(() => Tag)
+    @Field(() => [Tag])
     tags!: Tag[];
 
 }

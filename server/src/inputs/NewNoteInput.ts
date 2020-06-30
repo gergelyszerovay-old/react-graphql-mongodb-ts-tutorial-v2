@@ -13,6 +13,6 @@ export class NewNoteInput {
     @MaxLength(10000)
     text!: string;
 
-    @Field(() => String) // @SERVER
+    @Field(() => [String]) // @SERVER
     tagIds!: string[];
 }
