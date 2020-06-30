@@ -31,6 +31,8 @@ or
 You can open the app here: http://localhost:3000/
 You can open GraphiQL here: http://localhost:3000/graphql
 
+To load the demo data, choose the 'Load demo data' option from the 'Debug' menu. The demo data contains 3 users: user1@example.com, user2@example.com and user3@example.com. Their passwords are the same as their email addresses.
+
 # Packages used
 
 ## The project uses the following packages on client side:
