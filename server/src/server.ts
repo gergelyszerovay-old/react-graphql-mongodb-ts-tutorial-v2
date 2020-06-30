@@ -96,8 +96,8 @@ const startServer = async () => {
 
     server.applyMiddleware({app, path});
 
-    app.listen({port: 4001}, () =>
-        console.log(`Server ready at http://localhost:4001${server.graphqlPath}`)
+    app.listen({port: 4001, host: process.env.HOST}, () =>
+        console.log(`Server ready at http://${process.env.HOST}:4001${server.graphqlPath}`)
     );
 };
 

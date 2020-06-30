@@ -1,0 +1,105 @@
+version: '3.1'
+services:
+  install:
+    image: node:12
+    volumes:
+      - .:/opt/app
+      - node_modules:/opt/app/node_modules
+    working_dir: /opt/app
+    command: npm install
+  mongodb:
+    image: mongo
+    ports:
+      - 27017:27017
+  back-end:
+    image: node:12
+    command: npm run start-server
+    volumes:
+      - .:/opt/app:delegated
+      - node_modules:/opt/app/node_modules
+    working_dir: /opt/app
+    ports:
+      - 3000:3000
+    depends_on:
+      - mongodb
+    environment:
+      MONGODB_CONNECTION_STRING: mongodb://mongodb:27017/admin
+      HOST: back-end
+  front-end:
+    image: node:12
+    command: npm run start
+    volumes:
+      - .:/opt/app:delegated
+      - node_modules:/opt/app/node_modules
+    working_dir: /opt/app
+    ports:
+      - 3000:3000
+    depends_on:
+      - mongodb
+      - back-end
+    environment:
+      HOST: back-end
+  #  storybook:
+  #    image: node:12
+  #    command: npm run docker-storybook
+  #    volumes:
+  #      - .:/opt/app:delegated
+  #      - node_modules:/opt/app/node_modules
+  #    working_dir: /opt/app
+  #    ports:
+  #      - 5000:5000
+  #  test-server-unit:
+  #    image: node:12
+  #    command: npm run test-server-unit
+  #    volumes:
+  #      - .:/opt/app:delegated
+  #      - node_modules:/opt/app/node_modules
+  #    working_dir: /opt/app
+  #  test-server-api:
+  #    image: node:12
+  #    command: npm run test-server-api
+  #    volumes:
+  #      - .:/opt/app:delegated
+  #      - node_modules:/opt/app/node_modules
+  #    working_dir: /opt/app
+  #    depends_on:
+  #      - mongodb
+  #    environment:
+  #      MONGODB_CONNECTION_STRING: mongodb://mongodb:27017/admin
+  #  test-client-unit:
+  #    image: node:12
+  #    command: npm run test-client-unit
+  #    volumes:
+  #      - .:/opt/app:delegated
+  #      - node_modules:/opt/app/node_modules
+  #    working_dir: /opt/app
+  test-e2e:
+    image: node:12
+    command: npm run test-e2e
+    volumes:
+      - .:/opt/app:delegated
+      - node_modules:/opt/app/node_modules
+    working_dir: /opt/app
+    environment:
+      SELENIUM_HUB_URL: http://selenium-hub:4444/wd/hub
+      APP_BASE_URL: http://nuxt:3000/
+    depends_on:
+      - chrome
+  selenium-hub:
+    image: selenium/hub:3.141.59-20200525
+    container_name: selenium-hub
+    ports:
+      - "4444:4444"
+  chrome:
+    image: selenium/node-chrome-debug:3.141.59-20200525
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - selenium-hub
+    environment:
+      - HUB_HOST=selenium-hub
+      - HUB_PORT=4444
+    ports:
+      - 5900:5900
+volumes:
+  node_modules:

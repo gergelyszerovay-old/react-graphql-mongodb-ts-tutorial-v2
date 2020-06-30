@@ -47,7 +47,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "start-server": "cd server && npx ts-node-dev --respawn src/server.ts",
-    "e2e-test": "jest --verbose e2e-tests/SignInForm.test.js "
+    "e2e-test": "jest --verbose test-e2e/SignInForm.test.js "
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -66,8 +66,6 @@
   },
   "devDependencies": {
     "@craco/craco": "^5.6.4",
-    "chromedriver": "^83.0.0",
-    "geckodriver": "^1.19.1",
     "jest": "^24.9.0",
     "jest-cucumber": "^2.0.11",
     "selenium-webdriver": "^4.0.0-alpha.7"

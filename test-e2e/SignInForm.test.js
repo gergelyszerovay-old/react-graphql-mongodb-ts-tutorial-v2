@@ -1,5 +1,3 @@
-// import { defineFeature, loadFeature } from 'jest-cucumber';
-
 const {Builder} = require('selenium-webdriver')
 require('selenium-webdriver/chrome')
 require('selenium-webdriver/firefox')
