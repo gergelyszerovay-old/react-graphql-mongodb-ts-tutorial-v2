@@ -14,7 +14,7 @@ import {MUTATION_LOAD_DEMO_DATA} from './utils/gql';
 
 async function bootstrap() {
     const httpLink = createHttpLink({
-        uri: "http://localhost:3000/graphql",
+        uri: "http://" + window.location.hostname + ":3000/graphql",
         credentials: 'same-origin'
     });
 

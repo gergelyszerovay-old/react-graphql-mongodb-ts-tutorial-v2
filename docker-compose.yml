@@ -39,8 +39,9 @@ services:
       - back-end
     environment:
       HOST: front-end
+      BACKEND_HOST: back-end
     # https://github.com/facebook/create-react-app/issues/8688
-    stdin_open: true
+    tty: true
   #  storybook:
   #    image: node:12
   #    command: npm run docker-storybook
