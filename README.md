@@ -1,6 +1,30 @@
 # Simple note taking app that demonstrates how to integrate React, GraphQL and MongoDB using Typescript
 
-The project uses the following packages on client side:
+## Quickstart
+
+You can use *npm* or *docker-compose*.
+
+### Installation
+
+`git clone https://github.com/gergelyszerovay/react-graphql-mongodb-ts-tutorial-v2.git`
+
+`cd nuxt-secret-app`
+
+`docker-compose up install` or `npm install`
+
+If you use npm, set the **MONGODB_CONNECTION_STRING** environment variable, eg.: 
+
+MONGODB_CONNECTION_STRING=mongodb://localhost:27017/secret-store
+
+### Run the app
+
+`docker-compose up front-end` or `npm run start`
+
+You can open the app here: http://localhost:3000/
+
+# Packages used
+
+## The project uses the following packages on client side:
 
 * TypeScript 3.7.5
 * **Apollo Client 3.0.0-rc.2**
@@ -9,7 +33,7 @@ The project uses the following packages on client side:
 * Class Validator 0.12.2 for input/form validation
 * React Router 5.2
 
-The project uses the following packages on server side:
+## The project uses the following packages on server side:
 
 * TypeScript 3.7.5
 * Apollo Server Express 2.13.1 with **TypeGraphQL 1.0.0-rc.2**
@@ -23,6 +47,7 @@ The project uses the following packages on server side:
 * [It uses the same classes to represent the entities in MongoDB and GraphQL](#it-uses-the-same-classes-to-represent-the-entities-in-mongodb-and-graphQL)
 * [Same input validation code on the server and on the client side](#same-input-validation-code-on-the-server-and-on-the-client-side)
 * It uses Dataloader to optimize MongoDB queries ([/server/src/resolvers/NoteResolver.ts](https://github.com/gergelyszerovay/react-graphql-mongodb-ts-tutorial-v2/blob/master/server/src/resolvers/NoteResolver.ts))
+* [Jest, Jest Cucumber and Selenium based end-to-end test](#tests)
 
 # Available Scripts
 
@@ -274,6 +299,26 @@ Class Validator is integrated into TypeGraphQL on the server side, we call it ma
         });
     };
 ```
+
+# Tests
+
+#### End-to-end test example (Jest + Jest Cucumber + Selenium Grid)
+
+To run on Docker:
+
+`docker-compose up test-e2e`
+
+It starts a simple Selenium Grid with a single Chrome node and runs the tests. You can connect to the Chrome node's VNC server on the port 5900.
+
+To run it with npm, install Firefox, then:
+
+`npm install geckodriver -g`
+
+`npm link geckodriver`
+
+Set the SELENIUM_HUB_URL environment variable to 'local' (SELENIUM_HUB_URL=local), then:
+
+`npm run test-e2e`
 
 # TODO
 
