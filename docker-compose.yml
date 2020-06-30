@@ -19,7 +19,7 @@ services:
       - node_modules:/opt/app/node_modules
     working_dir: /opt/app
     ports:
-      - 3000:3000
+      - 4001:4001
     depends_on:
       - mongodb
     environment:
@@ -38,7 +38,9 @@ services:
       - mongodb
       - back-end
     environment:
-      HOST: back-end
+      HOST: front-end
+    # https://github.com/facebook/create-react-app/issues/8688
+    stdin_open: true
   #  storybook:
   #    image: node:12
   #    command: npm run docker-storybook

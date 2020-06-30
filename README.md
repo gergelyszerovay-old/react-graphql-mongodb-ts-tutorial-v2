@@ -8,19 +8,26 @@ You can use *npm* or *docker-compose*.
 
 `git clone https://github.com/gergelyszerovay/react-graphql-mongodb-ts-tutorial-v2.git`
 
-`cd nuxt-secret-app`
+`cd react-graphql-mongodb-ts-tutorial-v2`
 
 `docker-compose up install` or `npm install`
 
-If you use npm, set the **MONGODB_CONNECTION_STRING** environment variable, eg.: 
+If you use npm, set the **MONGODB_CONNECTION_STRING**, **HOST** and **BACKEND_HOST** environment variables, eg.: 
 
-MONGODB_CONNECTION_STRING=mongodb://localhost:27017/secret-store
+MONGODB_CONNECTION_STRING=mongodb://localhost:27017/admin
+HOST=127.0.0.1
+BACKEND_HOST=127.0.0.1
 
 ### Run the app
 
-`docker-compose up front-end` or `npm run start`
+`docker-compose up front-end` 
+
+or 
+
+`npm run start-server` and `npm run start` 
 
 You can open the app here: http://localhost:3000/
+You can open GraphiQL here: http://localhost:3000/graphql
 
 # Packages used
 

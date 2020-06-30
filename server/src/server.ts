@@ -9,7 +9,7 @@ import {Context} from "./apollo-context.interface";
 
 import {GenerateClientSideInputs} from './utils/GenerateClientSideInputs'
 
-import {ACCESS_TOKEN_SECRET, MONGODB_CONNECTION_STRING} from "./config";
+import {ACCESS_TOKEN_SECRET} from "./config";
 
 import * as cookieParser from "cookie-parser";
 import {verify} from "jsonwebtoken";
@@ -62,7 +62,7 @@ const startServer = async () => {
     await createConnection({
         "type": "mongodb",
         "useNewUrlParser": true,
-        'url': MONGODB_CONNECTION_STRING,
+        'url': process.env.MONGODB_CONNECTION_STRING,
         "synchronize": true,
         "logging": true,
         "entities": [User, Tag, Note]
