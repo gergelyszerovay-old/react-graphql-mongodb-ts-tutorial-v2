@@ -37,7 +37,7 @@ To load the demo data, choose the 'Load demo data' option from the 'Debug' menu.
 
 You can run Storybook with:
 
-`docker-compose up storybook` or `nx run app-lib:storybook`
+`docker-compose up storybook` or `npm run storybook`
 
 You can open the Storybook here: http://localhost:5000/
 
