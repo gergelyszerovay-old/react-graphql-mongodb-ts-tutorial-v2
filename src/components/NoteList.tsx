@@ -1,48 +1,14 @@
-import {Card, Dropdown, Menu, message, Modal, Tag} from 'antd';
+import {Card, Dropdown, Menu, Modal, Tag} from 'antd';
 import {DownOutlined, ExclamationCircleOutlined} from '@ant-design/icons';
 
-import React, {FC, Fragment, useContext} from 'react';
-import {gql, useMutation, useQuery} from "@apollo/client";
-import {useHistory} from "react-router-dom";
-import {QUERY_NOTE_LIST} from "../utils/gql";
-import {AppContext} from "../utils/AppContext";
+import React, {FC, Fragment} from 'react';
 
-const NoteList: FC = () => {
-    let history = useHistory();
-    const {user} = useContext(AppContext);
+interface NoteListProps {
+    hook: any;
+}
 
-    const {loading: getNotes_loading, data: getNotes_data, error: getNotes_error} = useQuery(QUERY_NOTE_LIST, {
-        variables: {
-            userId: user?._id
-        }
-        // fetchPolicy: 'no-cache'
-    });
-
-    const [DeleteNote, {data: DeleteNote_data}] = useMutation<() => void>(gql`
-    mutation DeleteNote($_id: String!) {
-      DeleteNote(_id: $_id)
-    }  
-    `,
-        {
-            refetchQueries: [{
-                query: QUERY_NOTE_LIST,
-                variables: {
-                    userId: user?._id
-                },
-            }]
-        });
-
-    const onCardActionClick = (action: string, noteId: string) => {
-        console.log(action);
-        console.log(noteId);
-        if (action === 'edit') {
-            history.push("/note/" + noteId);
-        } else if (action === 'delete') {
-            DeleteNote({variables: {_id: noteId}}).then(() => {
-                message.success('Note deleted.');
-            });
-        }
-    }
+const NoteList: FC<NoteListProps> = ({hook}: NoteListProps) => {
+    const {getNotes_loading, getNotes_data, onCardActionClick} = hook();
 
     if (getNotes_loading) {
         return <div>Loading...</div>
@@ -62,6 +28,8 @@ const NoteList: FC = () => {
     }
 
     if (getNotes_data?.Notes) {
+        console.log(getNotes_data);
+
         if (getNotes_data?.Notes.length === 0) {
             // no notes
             return <p>No notes yet.</p>

@@ -19,6 +19,7 @@ import useNewNoteForm from "./useNewNoteForm";
 import useEditNoteForm from "./useEditNoteForm";
 import useSignInForm from "./useSignInForm";
 import useSignUpForm from "./useSignUpForm";
+import useNoteList from "./useNoteList";
 
 const {Content} = Layout;
 
@@ -44,7 +45,7 @@ const App: FC<{ client: ApolloClient<any> }> = ({client}) => {
             path: '/notes',
             exact: true,
             menu: () => <TopMenu selected="notes"/>,
-            content: () => (user?._id ? <NoteList/> : <Redirect to="/"/>)
+            content: () => (user?._id ? <NoteList hook={useNoteList}/> : <Redirect to="/"/>)
         },
         {
             path: '/newnote',
