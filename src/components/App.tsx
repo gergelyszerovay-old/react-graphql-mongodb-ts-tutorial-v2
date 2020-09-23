@@ -9,16 +9,18 @@ import './App.css';
 import SignInForm from './SignInForm'
 import SignUpForm from './SignUpForm'
 import NoteList from './NoteList'
-import NewNote from './NewNote'
-import EditNote from './EditNote'
 import DebugScreen from './DebugScreen'
 import {TopMenu} from "./TopMenu";
 import {TopMenuSign} from "./TopMenuSign";
 import {Layout} from "antd";
 import {AppContext} from "../utils/AppContext";
+import NoteNewAndEditForm from "./NoteNewAndEditForm";
+import useNewNoteForm from "./useNewNoteForm";
+import useEditNoteForm from "./useEditNoteForm";
+import useSignInForm from "./useSignInForm";
+import useSignUpForm from "./useSignUpForm";
 
 const {Content} = Layout;
-
 
 const App: FC<{ client: ApolloClient<any> }> = ({client}) => {
     const {user} = useContext(AppContext);
@@ -30,13 +32,13 @@ const App: FC<{ client: ApolloClient<any> }> = ({client}) => {
             path: '/', // sign in
             exact: true,
             menu: () => <TopMenuSign selected="signin"/>,
-            content: () => <SignInForm/>
+            content: () => <SignInForm hook={useSignInForm}/>
         },
         {
             path: '/signup',
             exact: true,
             menu: () => <TopMenuSign selected="signup"/>,
-            content: () => <SignUpForm/>
+            content: () => <SignUpForm hook={useSignUpForm}/>
         },
         {
             path: '/notes',
@@ -47,19 +49,22 @@ const App: FC<{ client: ApolloClient<any> }> = ({client}) => {
         {
             path: '/newnote',
             exact: true,
-            menu: () => <TopMenu selected="notes"/>,
-            content: () => (user?._id ? <NewNote/> : <Redirect to="/"/>)
+            menu: () => <TopMenu selected="newnote"/>,
+            content: () => (user?._id ? <NoteNewAndEditForm hook={useNewNoteForm}/> : <Redirect to="/"/>)
         },
         {
             path: '/note/:id',
             menu: () => <TopMenu selected="notes"/>,
             content: ({match, history, location}: any) => (user?._id ?
-                <EditNote/> : <Redirect to="/"/>)
+                <NoteNewAndEditForm hook={useEditNoteForm}/> : <Redirect to="/"/>)
         },
         {
             path: '/debug',
             exact: true,
-            menu: () => (user?._id ? <TopMenu selected="debug"/> : <TopMenuSign selected="debug"/>),
+            menu: () => {
+                console.log(user);
+                return (user?._id ? <TopMenu selected="debug"/> : <TopMenuSign selected="debug"/>);
+            },
             content: () => <DebugScreen/>
         },
     ]

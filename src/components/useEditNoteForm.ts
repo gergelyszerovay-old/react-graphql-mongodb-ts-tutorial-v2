@@ -1,18 +1,17 @@
-import {Form} from 'antd';
-import React, {FC, useContext, useState} from 'react';
-import {gql, useMutation, useQuery} from "@apollo/client";
-import {ClientSideValidation, ServerSideValidation} from "../utils/validation-tools"
-import {EditNoteInput} from "../generated-inputs/EditNoteInput";
-import {useRouteMatch} from 'react-router-dom';
-import NoteModificationScreen from "./NoteModificationScreen";
-import {QUERY_TAGS} from "../utils/gql";
+import {useRouteMatch} from "react-router-dom";
+import {Form} from "antd";
+import {useContext, useState} from "react";
 import {AppContext} from "../utils/AppContext";
+import {useMutation, useQuery} from "@apollo/client";
+import {MUTATION_EDIT_NOTE, QUERY_SINGLE_NOTE, QUERY_TAGS} from "../utils/gql";
+import {EditNoteInput} from "../generated-inputs/EditNoteInput";
+import {ClientSideValidation, ServerSideValidation} from "../utils/validation-tools";
 
 interface MatchParams {
     id: string;
 }
 
-const EditNote: FC = () => {
+const useEditNoteForm = () => {
     let match = useRouteMatch<MatchParams>("/note/:id");
 
     const [form] = Form.useForm();
@@ -28,21 +27,7 @@ const EditNote: FC = () => {
         // fetchPolicy: 'no-cache'
     });
 
-    const {loading: getNote_loading, data: getNote_data, error: getNote_error} = useQuery(gql`  
-    query SingleNote($_id: String!) {
-      SingleNote(_id: $_id) {
-        _id
-        title
-        text
-        tags {
-          _id
-          name
-          userId
-        }         
-        userId
-      }
-    }
-    `, {
+    const {loading: getNote_loading, data: getNote_data, error: getNote_error} = useQuery(QUERY_SINGLE_NOTE, {
         variables: {
             _id: match?.params.id
         },
@@ -53,21 +38,7 @@ const EditNote: FC = () => {
         // fetchPolicy: 'no-cache'
     });
 
-    const [EditNote, {data: EditNote_data}] = useMutation<() => void>(gql`
-    mutation EditNote($_id: String!, $title: String!, $text: String!, $tagIds: [String!]!) {
-      EditNote(data :{_id: $_id, title: $title, text: $text, tagIds: $tagIds}) {
-        _id
-        title
-        text
-        tags {
-          _id
-          name
-          userId
-        }         
-        userId
-    }
-    }  
-    `,
+    const [EditNote, {data: EditNote_data}] = useMutation<() => void>(MUTATION_EDIT_NOTE,
         {
             refetchQueries: [{
                 query: QUERY_TAGS,
@@ -115,9 +86,7 @@ const EditNote: FC = () => {
         });
     };
 
-    return <NoteModificationScreen form={form} tagsData={getTags_data} onFinish={onFinish}
-                                   isSubmitDisabled={isSubmitDisabled} selectedMenuItem="notes"
-                                   isLoading={getNote_data === undefined}/>
-}
+    return {form, tagsData: getTags_data, isLoading: getTags_loading || getNote_loading, onFinish, isSubmitDisabled};
+};
 
-export default EditNote;
+export default useEditNoteForm;

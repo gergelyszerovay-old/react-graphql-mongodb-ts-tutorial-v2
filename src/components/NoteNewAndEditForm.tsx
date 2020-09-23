@@ -1,34 +1,20 @@
-import {Button, Col, Form, Input, Layout, Row, Select} from 'antd';
+import {Button, Col, Form, Input, Row, Select} from 'antd';
 import React, {FC} from 'react';
-import {FormInstance} from "antd/es/form";
 
 const {TextArea} = Input;
 const {Option} = Select;
-const {Content} = Layout;
 
-interface MatchParams {
-    id: string;
+interface NoteNewAndEditFormProps {
+    hook: any;
 }
 
-interface NoteModificationScreenProps {
-    tagsData: any;
-    form: FormInstance;
-    onFinish: (values: any) => void;
-    isSubmitDisabled: boolean;
-    selectedMenuItem: string;
-    isLoading?: boolean;
-}
+const NoteNewAndEditForm: FC<NoteNewAndEditFormProps> = ({hook}: NoteNewAndEditFormProps) => {
 
-const NoteModificationScreen: FC<NoteModificationScreenProps> = ({tagsData, form, onFinish, isSubmitDisabled, selectedMenuItem, isLoading = false}: NoteModificationScreenProps) => {
+    const {form, tagsData, isLoading, onFinish, isSubmitDisabled} = hook();
 
     if (isLoading) {
         return (
-            // <Layout className="app-layout">
-            //     <TopMenu selected={selectedMenuItem}/>
-            //     <Content className="app-content">
             <p>Loading...</p>
-            //     </Content>
-            // </Layout>
         )
     }
 
@@ -68,4 +54,4 @@ const NoteModificationScreen: FC<NoteModificationScreenProps> = ({tagsData, form
     )
 }
 
-export default NoteModificationScreen;
+export default NoteNewAndEditForm;

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@apollo/client": "^3.0.0-rc.2",
+    "@apollo/client": "^3.0.0-rc.10",
     "@apollo/link-context": "^2.0.0-beta.3",
     "@apollo/link-error": "^2.0.0-beta.3",
     "@testing-library/jest-dom": "^4.2.4",
@@ -36,10 +36,10 @@
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
-    "ts-node-dev": "^1.0.0-pre.44",
+    "ts-node-dev": "^1.0.0-pre.50",
     "type-graphql": "^1.0.0-rc.2",
     "typeorm": "^0.2.25",
-    "typescript": "^3.7.5"
+    "typescript": "^3.9.6"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -47,7 +47,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "start-server": "cd server && npx ts-node-dev --respawn src/server.ts",
-    "test-e2e": "jest --verbose test-e2e/SignInForm.test.js "
+    "test-e2e": "jest --verbose test-e2e/SignInForm.test.js ",
+    "storybook": "start-storybook --port 5000",
+    "docker-storybook": "start-storybook --host storybook --port 5000"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -66,8 +68,14 @@
   },
   "devDependencies": {
     "@craco/craco": "^5.6.4",
+    "@storybook/preset-create-react-app": "^3.1.2",
+    "@storybook/react": "^5.3.19",
+    "awesome-typescript-loader": "^5.2.1",
     "jest": "^24.9.0",
     "jest-cucumber": "^2.0.11",
-    "selenium-webdriver": "^4.0.0-alpha.7"
+    "react-docgen-typescript-loader": "^3.7.2",
+    "react-docgen-typescript-webpack-plugin": "^1.1.0",
+    "selenium-webdriver": "^4.0.0-alpha.7",
+    "ts-loader": "^7.0.5"
   }
 }

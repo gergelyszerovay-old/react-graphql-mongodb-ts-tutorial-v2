@@ -29,3 +29,50 @@ export const MUTATION_LOAD_DEMO_DATA = gql`
       LoadDemoData
     }  
     `;
+
+export const QUERY_SINGLE_NOTE = gql`  
+    query SingleNote($_id: String!) {
+      SingleNote(_id: $_id) {
+        _id
+        title
+        text
+        tags {
+          _id
+          name
+          userId
+        }         
+        userId
+      }
+    }
+   `;
+
+export const MUTATION_NEW_NOTE = gql`
+    mutation NewNote($title: String!, $text: String!, $tagIds: [String!]!) {
+      NewNote(data :{title: $title, text: $text, tagIds: $tagIds}) {
+        _id
+        title
+        text
+        tags {
+          _id
+          name
+          userId
+        }         
+      }
+    }  
+    `;
+
+export const MUTATION_EDIT_NOTE = gql`
+    mutation EditNote($_id: String!, $title: String!, $text: String!, $tagIds: [String!]!) {
+      EditNote(data :{_id: $_id, title: $title, text: $text, tagIds: $tagIds}) {
+        _id
+        title
+        text
+        tags {
+          _id
+          name
+          userId
+        }         
+        userId
+    }
+    }  
+    `;

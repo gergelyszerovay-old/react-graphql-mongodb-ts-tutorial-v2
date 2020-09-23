@@ -1,13 +1,12 @@
-import {Form} from 'antd';
-import React, {FC, useContext, useState} from 'react';
-import {gql, useMutation, useQuery} from "@apollo/client";
-import {ClientSideValidation, ServerSideValidation} from "../utils/validation-tools"
-import {NewNoteInput} from "../generated-inputs/NewNoteInput";
-import NoteModificationScreen from "./NoteModificationScreen";
-import {QUERY_NOTE_LIST, QUERY_TAGS} from "../utils/gql";
+import {useContext, useState} from "react";
 import {AppContext} from "../utils/AppContext";
+import {Form} from "antd";
+import {useMutation, useQuery} from "@apollo/client";
+import {MUTATION_NEW_NOTE, QUERY_NOTE_LIST, QUERY_TAGS} from "../utils/gql";
+import {NewNoteInput} from "../generated-inputs/NewNoteInput";
+import {ClientSideValidation, ServerSideValidation} from "../utils/validation-tools";
 
-const NewNote: FC = () => {
+const useNewNoteForm = (dryRun: boolean = false) => {
     const {user} = useContext(AppContext);
 
     const [form] = Form.useForm();
@@ -21,20 +20,7 @@ const NewNote: FC = () => {
         // fetchPolicy: 'no-cache'
     });
 
-    const [NewNote, {data: NewNote_data}] = useMutation<() => void>(gql`
-    mutation NewNote($title: String!, $text: String!, $tagIds: [String!]!) {
-      NewNote(data :{title: $title, text: $text, tagIds: $tagIds}) {
-        _id
-        title
-        text
-        tags {
-          _id
-          name
-          userId
-        }         
-      }
-    }  
-    `,
+    const [NewNote, {data: NewNote_data}] = useMutation<() => void>(MUTATION_NEW_NOTE,
         {
             refetchQueries: [{
                 query: QUERY_TAGS,
@@ -72,6 +58,9 @@ const NewNote: FC = () => {
         console.log(input)
 
         ClientSideValidation(form, input, () => {
+            if (dryRun) {
+                return;
+            }
             SetIsSubmitDisabled(true)
             NewNote({variables: input}).then((data) => {
                 // successful save
@@ -85,10 +74,7 @@ const NewNote: FC = () => {
             });
         });
     };
+    return {form, tagsData: getTags_data, isLoading: getTags_loading, onFinish, isSubmitDisabled}
+};
 
-    return <NoteModificationScreen form={form} tagsData={getTags_data} onFinish={onFinish}
-                                   isSubmitDisabled={isSubmitDisabled} selectedMenuItem="newnote"/>
-
-}
-
-export default NewNote;
+export default useNewNoteForm;
